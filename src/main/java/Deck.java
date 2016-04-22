@@ -1,11 +1,14 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.IntStream;
 
 public class Deck {
 
-    public List<Card> getCards() {
+    private Stack<Card> cards = new Stack<>();
+
+    public Stack<Card> getCards() {
         return cards;
     }
 
@@ -15,8 +18,6 @@ public class Deck {
         }
 
     }
-
-    private List<Card> cards = new ArrayList<>();
 
     public void shuffle() {
         Collections.shuffle(cards);
