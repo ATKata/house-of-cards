@@ -25,7 +25,8 @@ public class DeckTest {
     }
 
     @Test
-    public void shuffle_givenCardsInTheDeck_ShouldHaveReorganised() throws Exception {
+    //N.B. this test is friable - there is a chance that the shuffle leaves the order unchanged...
+    public void shuffle_shufflingTheDeck_shouldResultInADifferentOrder() throws Exception {
         Condition<List> nonSequentialOrder = new Condition<>( DeckTest::listsArentInTheSameOrder
                 , "Something other than: " + new Deck().getCards());
         Deck deck = new Deck();
@@ -45,6 +46,9 @@ public class DeckTest {
     public void deal_givenANewDeckOfCards_removeAceOfClubsFromDeck(){
         Deck deck = new Deck();
         Card aceOfClubs = new Card(1, Suit.CLUBS);
+
+        deck.deal();
+
         assertThat(deck.getCards()).doesNotContain(aceOfClubs);
     }
 
