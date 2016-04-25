@@ -9,7 +9,7 @@ public class Klondike {
     private List<Card> wastePile;
 
     public Klondike() {
-        stockPile = new Deck();
+        stockPile = new Deck().shuffle();
         wastePile = new LinkedList<>();
         tableauPiles = new LinkedList<>();
         foundationPiles = new LinkedList<>();

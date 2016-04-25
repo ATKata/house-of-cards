@@ -28,6 +28,11 @@ public class KlondikeTest {
     }
 
     @Test
+    public void newGameHasAShuffledStockPile(){
+        assertThat(klondike.getStockPile().deal()).isNotEqualTo(new Card(1,Suit.CLUBS));
+    }
+
+    @Test
     public void gameShouldHaveAWastePile(){
         assertThat(klondike.getWastePile()).hasSize(0);
     }
