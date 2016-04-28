@@ -45,4 +45,12 @@ public class KlondikeTest {
             assertThat(klondike.getTableauPile(i)).hasSize(i+1);
         }
     }
+
+    @Test
+    public void generateStringRepresentation(){
+        klondike.deal();
+
+        assertThat(klondike.toString()).containsPattern(
+                "XXX ___    ___ ___ ___ ___");
+    }
 }

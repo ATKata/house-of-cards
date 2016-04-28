@@ -26,7 +26,8 @@ public class Deck {
         return cards.pop();
     }
 
-    public int getSize() {
-        return cards.size();
+    public String toString(){
+        return cards.size() == 0 ? "___" : cards.getLast().toString();
     }
+
 }

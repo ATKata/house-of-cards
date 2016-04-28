@@ -6,8 +6,17 @@
  */
 public class Card implements Comparable<Card> {
 
-    private int faceValue;
-    private Suit suit;
+    private final int faceValue;
+    private final Suit suit;
+    private boolean faceUp;
+
+    public boolean isFaceUp() {
+        return faceUp;
+    }
+
+    public void setFaceUp(boolean faceUp) {
+        this.faceUp = faceUp;
+    }
 
     public Card(int faceValue, Suit suit) {
         this.faceValue = faceValue;
@@ -30,10 +39,6 @@ public class Card implements Comparable<Card> {
         return suit.compareTo(other.getSuit());
     }
 
-    public String toString() {
-        return String.format("Suit: %s, value %d", this.suit, this.faceValue);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,5 +56,14 @@ public class Card implements Comparable<Card> {
         int result = faceValue;
         result = 31 * result + (suit != null ? suit.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString(){
+        if(faceUp){
+            return String.format("%d%s",faceValue,suit);
+        } else {
+            return "XXX";
+        }
     }
 }
