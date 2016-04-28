@@ -27,7 +27,7 @@ public class Deck {
     }
 
     public String toString(){
-        return cards.size() == 0 ? "___" : cards.getLast().toString();
+        return cards.size() == 0 ? Klondike.EMPTY_PILE : cards.getLast().toString();
     }
 
 }

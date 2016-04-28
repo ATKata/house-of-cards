@@ -51,12 +51,15 @@ public class KlondikeTest {
         klondike.deal();
 
         assertThat(klondike.toString()).matches(
+                "Stock and Waste:\n" +
                 "XXX ___\n" +
+                "\n" +
                 "Foundation:\n" +
                 "___\n" +
                 "___\n" +
                 "___\n" +
                 "___\n" +
+                "\n" +
                 "Tableaux:\n" +
                 "...\n" +
                 "... ...\n" +
@@ -65,5 +68,12 @@ public class KlondikeTest {
                 "... ... ... ... ...\n" +
                 "... ... ... ... ... ...\n" +
                 "... ... ... ... ... ... ...\n");
+    }
+
+    //TODO NOT REALLY A TEST!!!
+    @Test
+    public void playGame(){
+        klondike.deal();
+        System.out.println(klondike);
     }
 }
