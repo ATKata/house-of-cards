@@ -50,12 +50,20 @@ public class KlondikeTest {
     public void generateStringRepresentation(){
         klondike.deal();
 
-        assertThat(klondike.toString()).containsPattern(
+        assertThat(klondike.toString()).matches(
                 "XXX ___\n" +
+                "Foundation:\n" +
                 "___\n" +
                 "___\n" +
                 "___\n" +
                 "___\n" +
-                "...\n");
+                "Tableaux:\n" +
+                "...\n" +
+                "... ...\n" +
+                "... ... ...\n" +
+                "... ... ... ...\n" +
+                "... ... ... ... ...\n" +
+                "... ... ... ... ... ...\n" +
+                "... ... ... ... ... ... ...\n");
     }
 }

@@ -59,7 +59,7 @@ public class Klondike {
     public String toString(){
         String wastePileString = wastePile.size()==0 ? "___" : wastePile.peek().toString();
 
-        StringBuilder foundationPilesStringBuilder = new StringBuilder();
+        StringBuilder foundationPilesStringBuilder = new StringBuilder("Foundation:\n");
         for(List<Card> foundationPile : foundationPiles){
             if(foundationPile.size()==0){
                 foundationPilesStringBuilder.append("___\n");
@@ -69,11 +69,11 @@ public class Klondike {
             }
         }
 
-        StringBuilder tableauPilesStringBuilder = new StringBuilder();
+        StringBuilder tableauPilesStringBuilder = new StringBuilder("Tableaux:\n");
         for(List<Card> tableauPile : tableauPiles){
             tableauPilesStringBuilder.append(String.format("%s\n", tableauPile.stream().map(Object::toString).collect(Collectors.joining(" "))));
         }
-        return String.format("%s %s\n%s\n%s", stockPile, wastePileString, foundationPilesStringBuilder, tableauPilesStringBuilder);
+        return String.format("%s %s\n%s%s", stockPile, wastePileString, foundationPilesStringBuilder, tableauPilesStringBuilder);
     }
 
 

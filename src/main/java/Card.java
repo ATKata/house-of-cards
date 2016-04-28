@@ -61,7 +61,7 @@ public class Card implements Comparable<Card> {
     @Override
     public String toString(){
         if(faceUp){
-            return String.format("%d%s",faceValue,suit);
+            return String.format("%2d%s",faceValue,suit);
         } else {
             return "XXX";
         }
