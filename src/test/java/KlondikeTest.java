@@ -51,6 +51,11 @@ public class KlondikeTest {
         klondike.deal();
 
         assertThat(klondike.toString()).containsPattern(
-                "XXX ___    ___ ___ ___ ___");
+                "XXX ___\n" +
+                "___\n" +
+                "___\n" +
+                "___\n" +
+                "___\n" +
+                "...\n");
     }
 }

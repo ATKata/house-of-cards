@@ -9,11 +9,11 @@ public class Klondike {
     private Deck stockPile;
     private List<Stack<Card>> tableauPiles;
     private List<Stack<Card>> foundationPiles;
-    private LinkedList<Card> wastePile;
+    private Stack<Card> wastePile;
 
     public Klondike() {
         stockPile = new Deck().shuffle();
-        wastePile = new LinkedList<>();
+        wastePile = new Stack<>();
         tableauPiles = new LinkedList<>();
         foundationPiles = new LinkedList<>();
 
@@ -48,6 +48,7 @@ public class Klondike {
                 tableauPiles.get(i).add(stockPile.deal());
             }
         }
+        tableauPiles.stream().forEach(pile -> pile.peek().setFaceUp(true));
     }
 
     public Stack<Card> getTableauPile(int index) {
@@ -56,12 +57,23 @@ public class Klondike {
 
     @Override
     public String toString(){
-        String wastePileString = wastePile.size()==0 ? "___" : wastePile.getLast().toString();
-        StringBuilder tableauPilesStringBuilder = new StringBuilder();
-        for(List<Card> list : tableauPiles){
-            tableauPilesStringBuilder.append(String.format("%s\n", list.stream().map(Object::toString).collect(Collectors.joining(" "))));
+        String wastePileString = wastePile.size()==0 ? "___" : wastePile.peek().toString();
+
+        StringBuilder foundationPilesStringBuilder = new StringBuilder();
+        for(List<Card> foundationPile : foundationPiles){
+            if(foundationPile.size()==0){
+                foundationPilesStringBuilder.append("___\n");
+            } else {
+                foundationPilesStringBuilder.append(String.format("%s\n",
+                        foundationPile.stream().map(Object::toString).collect(Collectors.joining(" "))));
+            }
         }
-        return String.format("%s %s\n%s", stockPile,  wastePileString, tableauPilesStringBuilder);
+
+        StringBuilder tableauPilesStringBuilder = new StringBuilder();
+        for(List<Card> tableauPile : tableauPiles){
+            tableauPilesStringBuilder.append(String.format("%s\n", tableauPile.stream().map(Object::toString).collect(Collectors.joining(" "))));
+        }
+        return String.format("%s %s\n%s\n%s", stockPile, wastePileString, foundationPilesStringBuilder, tableauPilesStringBuilder);
     }
 
 
