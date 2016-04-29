@@ -23,13 +23,8 @@ public class KlondikeTest {
     }
 
     @Test
-    public void gameShouldHaveAStockPile(){
-        assertThat(klondike.getStockPile()).isNotNull();
-    }
-
-    @Test
     public void newGameHasAShuffledStockPile(){
-        assertThat(klondike.getStockPile().deal()).isNotEqualTo(new Card(1,Suit.CLUBS));
+        assertThat(klondike.takeCardFromStock()).isNotEqualTo(new Card(1,Suit.CLUBS));
     }
 
     @Test
@@ -70,10 +65,30 @@ public class KlondikeTest {
                 "... ... ... ... ... ... ...\n");
     }
 
+    @Test
+    public void takeCardFromStockAddsOneToWastePile(){
+        klondike.deal();
+        Card takenFromStock = klondike.takeCardFromStock();
+        Card placedOnWaste = klondike.getWastePile().peek();
+        assertThat(placedOnWaste).isNotNull().isEqualTo(takenFromStock);
+        assertThat(placedOnWaste.isFaceUp()).isTrue();
+    }
+
+    @Test
+    public void takeCardFromStockWhenEmptyRefillsFromWastePile(){
+        Card firstCardDrawn = klondike.takeCardFromStock();
+        Card lastCardDrawn = null;
+        for (int i = 0; i < 52; i++) {
+           lastCardDrawn = klondike.takeCardFromStock();
+        }
+        assertThat(firstCardDrawn).isEqualTo(lastCardDrawn);
+    }
+
     //TODO NOT REALLY A TEST!!!
     @Test
     public void playGame(){
         klondike.deal();
         System.out.println(klondike);
     }
+
 }

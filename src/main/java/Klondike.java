@@ -33,11 +33,7 @@ public class Klondike {
         return foundationPiles;
     }
 
-    public Deck getStockPile() {
-        return stockPile;
-    }
-
-    public List<Card> getWastePile() {
+    public Stack<Card> getWastePile() {
         return wastePile;
     }
 
@@ -81,4 +77,14 @@ public class Klondike {
     }
 
 
+    public Card takeCardFromStock() {
+        if(stockPile.getCards().size()==0){
+            stockPile.getCards().addAll(wastePile);
+            //stockPile.getCards().stream().forEach(card -> card.setFaceUp(false));
+        }
+        Card dealtCard = stockPile.deal();
+        dealtCard.setFaceUp(true);
+        wastePile.push(dealtCard);
+        return dealtCard;
+    }
 }
