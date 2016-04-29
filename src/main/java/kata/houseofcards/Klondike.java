@@ -92,9 +92,20 @@ public class Klondike {
     }
 
     public boolean addToFoundationPile(Card card) {
-        if (card.getFaceValue() == 1) {
+        Stack<Card> foundationPileForSuit = foundationPiles.get(card.getSuit().ordinal());
+        if (foundationPileForSuit.size() == 0) {
+            if(card.getFaceValue() == 1) {
+                card.setFaceUp(true);
+                foundationPileForSuit.push(card);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        if(card.getFaceValue() - foundationPileForSuit.peek().getFaceValue() == 1) {
             card.setFaceUp(true);
-            foundationPiles.get(card.getSuit().ordinal()).push(card);
+            foundationPileForSuit.push(card);
             return true;
         } else {
             return false;

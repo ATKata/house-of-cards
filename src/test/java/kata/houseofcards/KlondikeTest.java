@@ -104,6 +104,16 @@ public class KlondikeTest {
         assertThatThrownBy(() -> klondike.peekAtFoundationPile(CLUBS)).isInstanceOf(EmptyStackException.class);
     }
 
+    @Test
+    public void foundationPilesMustBeBuiltInAscendingOrder(){
+        Card aceOfClubs = new Card(1, CLUBS);
+        Card twoOfClubs = new Card(2, CLUBS);
+        Card fourOfClubs = new Card(4, CLUBS);
+        klondike.addToFoundationPile(aceOfClubs);
+        assertThat(klondike.addToFoundationPile(twoOfClubs)).isTrue();
+        assertThat(klondike.addToFoundationPile(fourOfClubs)).isFalse();
+    }
+
     //TODO NOT REALLY A TEST!!!
     @Test
     public void playGame(){
