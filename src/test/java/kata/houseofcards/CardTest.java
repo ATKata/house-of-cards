@@ -1,3 +1,7 @@
+package kata.houseofcards;
+
+import kata.houseofcards.Card;
+import kata.houseofcards.Suit;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

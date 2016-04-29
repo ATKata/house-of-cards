@@ -1,3 +1,5 @@
+package kata.houseofcards;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -87,4 +89,14 @@ public class Klondike {
         wastePile.push(dealtCard);
         return dealtCard;
     }
+
+    public void addToFoundationPile(Suit suit, Card card) {
+        card.setFaceUp(true);
+        foundationPiles.get(suit.ordinal()).push(card);
+    }
+
+    public Card peekAtFoundationPile(Suit suit){
+        return foundationPiles.get(suit.ordinal()).peek();
+    }
+
 }

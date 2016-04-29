@@ -1,3 +1,5 @@
+package kata.houseofcards;
+
 import org.assertj.core.api.Condition;
 import org.junit.Test;
 
@@ -39,7 +41,7 @@ public class DeckTest {
     @Test
     public void deal_givenANewDeckOfCards_shouldDealAceOfClubsFirst(){
         Deck deck = new Deck();
-        assertThat(deck.deal()).isEqualTo(new Card(1,Suit.CLUBS));
+        assertThat(deck.deal()).isEqualTo(new Card(1, Suit.CLUBS));
     }
 
     @Test

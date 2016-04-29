@@ -1,3 +1,5 @@
+package kata.houseofcards;
+
 public enum Suit {
     CLUBS, DIAMONDS, HEARTS, SPADES;
 

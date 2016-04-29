@@ -1,6 +1,9 @@
+package kata.houseofcards;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import static kata.houseofcards.Suit.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class KlondikeTest {
@@ -24,7 +27,7 @@ public class KlondikeTest {
 
     @Test
     public void newGameHasAShuffledStockPile(){
-        assertThat(klondike.takeCardFromStock()).isNotEqualTo(new Card(1,Suit.CLUBS));
+        assertThat(klondike.takeCardFromStock()).isNotEqualTo(new Card(1, CLUBS));
     }
 
     @Test
@@ -82,6 +85,14 @@ public class KlondikeTest {
            lastCardDrawn = klondike.takeCardFromStock();
         }
         assertThat(firstCardDrawn).isEqualTo(lastCardDrawn);
+    }
+
+    @Test
+    public void placeCardOnFoundationPile(){
+        Card aceOfClubs = new Card(1, CLUBS);
+        klondike.addToFoundationPile(CLUBS,aceOfClubs);
+        assertThat(klondike.peekAtFoundationPile(CLUBS).isFaceUp()).isTrue();
+        System.out.println(klondike);
     }
 
     //TODO NOT REALLY A TEST!!!
