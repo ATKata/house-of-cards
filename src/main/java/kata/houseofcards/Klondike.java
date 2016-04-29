@@ -53,12 +53,12 @@ public class Klondike {
     }
 
     @Override
-    public String toString(){
-        String wastePileString = wastePile.size()==0 ? EMPTY_PILE : wastePile.peek().toString();
+    public String toString() {
+        String wastePileString = wastePile.size() == 0 ? EMPTY_PILE : wastePile.peek().toString();
 
         StringBuilder foundationPilesStringBuilder = new StringBuilder("Foundation:\n");
-        for(List<Card> foundationPile : foundationPiles){
-            if(foundationPile.size()==0){
+        for (List<Card> foundationPile : foundationPiles) {
+            if (foundationPile.size() == 0) {
                 foundationPilesStringBuilder.append(EMPTY_PILE).append("\n");
             } else {
                 foundationPilesStringBuilder.append(
@@ -67,22 +67,23 @@ public class Klondike {
         }
 
         StringBuilder tableauPilesStringBuilder = new StringBuilder("Tableaux:\n");
-        for(List<Card> tableauPile : tableauPiles){
-            if(tableauPile.size()==0){
+        for (List<Card> tableauPile : tableauPiles) {
+            if (tableauPile.size() == 0) {
                 tableauPilesStringBuilder.append(EMPTY_PILE).append("\n");
             } else {
                 tableauPilesStringBuilder.append(
                         tableauPile.stream().map(Object::toString).collect(Collectors.joining(" "))).append("\n");
             }
         }
-        return String.format("Stock and Waste:\n%s %s\n\n%s\n%s", stockPile, wastePileString, foundationPilesStringBuilder, tableauPilesStringBuilder);
+        return String.format("Stock and Waste:\n%s %s\n\n%s\n%s", stockPile, wastePileString,
+                foundationPilesStringBuilder, tableauPilesStringBuilder);
     }
 
 
     public Card takeCardFromStock() {
-        if(stockPile.getCards().size()==0){
+        if (stockPile.getCards().size() == 0) {
             stockPile.getCards().addAll(wastePile);
-            //stockPile.getCards().stream().forEach(card -> card.setFaceUp(false));
+            stockPile.getCards().stream().forEach(card -> card.setFaceUp(false));
         }
         Card dealtCard = stockPile.deal();
         dealtCard.setFaceUp(true);
@@ -90,12 +91,18 @@ public class Klondike {
         return dealtCard;
     }
 
-    public void addToFoundationPile(Suit suit, Card card) {
-        card.setFaceUp(true);
-        foundationPiles.get(suit.ordinal()).push(card);
+    public boolean addToFoundationPile(Card card) {
+        if (card.getFaceValue() == 1) {
+            card.setFaceUp(true);
+            foundationPiles.get(card.getSuit().ordinal()).push(card);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
-    public Card peekAtFoundationPile(Suit suit){
+    public Card peekAtFoundationPile(Suit suit) {
         return foundationPiles.get(suit.ordinal()).peek();
     }
 

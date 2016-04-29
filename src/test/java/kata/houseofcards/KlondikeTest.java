@@ -3,8 +3,11 @@ package kata.houseofcards;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.EmptyStackException;
+
 import static kata.houseofcards.Suit.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class KlondikeTest {
 
@@ -90,9 +93,15 @@ public class KlondikeTest {
     @Test
     public void placeCardOnFoundationPile(){
         Card aceOfClubs = new Card(1, CLUBS);
-        klondike.addToFoundationPile(CLUBS,aceOfClubs);
+        klondike.addToFoundationPile(aceOfClubs);
         assertThat(klondike.peekAtFoundationPile(CLUBS).isFaceUp()).isTrue();
-        System.out.println(klondike);
+    }
+
+    @Test
+    public void canOnlyStartAFoundationPileWithAnAce(){
+        Card twoOfClubs = new Card(2, CLUBS);
+        assertThat(klondike.addToFoundationPile(twoOfClubs)).isFalse();
+        assertThatThrownBy(() -> klondike.peekAtFoundationPile(CLUBS)).isInstanceOf(EmptyStackException.class);
     }
 
     //TODO NOT REALLY A TEST!!!
