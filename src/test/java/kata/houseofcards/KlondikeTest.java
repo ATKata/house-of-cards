@@ -9,6 +9,7 @@ import java.util.Stack;
 import static kata.houseofcards.Suit.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Fail.fail;
 
 public class KlondikeTest {
 
@@ -135,6 +136,12 @@ public class KlondikeTest {
         Card fakeCard = new Card(cardOnTopOfPile.getFaceValue()+1,cardOnTopOfPile.getSuit());
         assertThat(klondike.addToTableauPile(0,fakeCard)).isFalse();
         assertThat(firstTableauPile).hasSize(1);
+    }
+
+    //TODO
+    @Test
+    public void addMultipleCardsToTableauPile(){
+        fail("Not yet implemented.");
     }
 
     //TODO NOT REALLY A TEST!!!
