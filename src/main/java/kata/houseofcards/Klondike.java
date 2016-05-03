@@ -66,7 +66,7 @@ public class Klondike {
             }
         }
 
-        StringBuilder tableauPilesStringBuilder = new StringBuilder("Tableaux:\n");
+        StringBuilder tableauPilesStringBuilder = new StringBuilder("Tableau:\n");
         for (List<Card> tableauPile : tableauPiles) {
             if (tableauPile.size() == 0) {
                 tableauPilesStringBuilder.append(EMPTY_PILE).append("\n");
@@ -117,4 +117,8 @@ public class Klondike {
         return foundationPiles.get(suit.ordinal()).peek();
     }
 
+    public boolean addToTableauPile(int index, Card card) {
+        card.setFaceUp(true);
+        return(tableauPiles.get(index).push(card)!=null);
+    }
 }

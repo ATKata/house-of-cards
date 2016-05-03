@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.EmptyStackException;
+import java.util.Stack;
 
 import static kata.houseofcards.Suit.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,7 +62,7 @@ public class KlondikeTest {
                 "___\n" +
                 "___\n" +
                 "\n" +
-                "Tableaux:\n" +
+                "Tableau:\n" +
                 "...\n" +
                 "... ...\n" +
                 "... ... ...\n" +
@@ -112,6 +113,19 @@ public class KlondikeTest {
         klondike.addToFoundationPile(aceOfClubs);
         assertThat(klondike.addToFoundationPile(twoOfClubs)).isTrue();
         assertThat(klondike.addToFoundationPile(fourOfClubs)).isFalse();
+    }
+
+    @Test
+    public void successfullyAddToTableauPile(){
+        klondike.deal();
+        Stack<Card> firstTableauPile = klondike.getTableauPile(0);
+        Card cardOnTopOfPile = firstTableauPile.peek();
+        Card fakeCard = new Card(cardOnTopOfPile.getFaceValue()-1,cardOnTopOfPile.getSuit());
+        assertThat(klondike.addToTableauPile(0,fakeCard)).isTrue();
+        assertThat(firstTableauPile).hasSize(2);
+        assertThat(firstTableauPile.get(0).isFaceUp()).isTrue();
+        assertThat(firstTableauPile.get(1).isFaceUp()).isTrue();
+
     }
 
     //TODO NOT REALLY A TEST!!!
