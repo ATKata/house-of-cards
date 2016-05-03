@@ -118,7 +118,13 @@ public class Klondike {
     }
 
     public boolean addToTableauPile(int index, Card card) {
-        card.setFaceUp(true);
-        return(tableauPiles.get(index).push(card)!=null);
+        Stack<Card> pile = tableauPiles.get(index);
+        if(pile.peek().getFaceValue()>card.getFaceValue()){
+            card.setFaceUp(true);
+            pile.push(card);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

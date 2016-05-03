@@ -125,7 +125,16 @@ public class KlondikeTest {
         assertThat(firstTableauPile).hasSize(2);
         assertThat(firstTableauPile.get(0).isFaceUp()).isTrue();
         assertThat(firstTableauPile.get(1).isFaceUp()).isTrue();
+    }
 
+    @Test
+    public void tableauPileCardsMustBeInDescendingOrder(){
+        klondike.deal();
+        Stack<Card> firstTableauPile = klondike.getTableauPile(0);
+        Card cardOnTopOfPile = firstTableauPile.peek();
+        Card fakeCard = new Card(cardOnTopOfPile.getFaceValue()+1,cardOnTopOfPile.getSuit());
+        assertThat(klondike.addToTableauPile(0,fakeCard)).isFalse();
+        assertThat(firstTableauPile).hasSize(1);
     }
 
     //TODO NOT REALLY A TEST!!!
