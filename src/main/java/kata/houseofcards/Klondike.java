@@ -127,4 +127,8 @@ public class Klondike {
             return false;
         }
     }
+
+    public boolean addToTableauPile(int index, List<Card> cards){
+        return false;
+    }
 }

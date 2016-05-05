@@ -3,7 +3,10 @@ package kata.houseofcards;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EmptyStackException;
+import java.util.List;
 import java.util.Stack;
 
 import static kata.houseofcards.Suit.*;
@@ -141,7 +144,9 @@ public class KlondikeTest {
     //TODO
     @Test
     public void addMultipleCardsToTableauPile(){
-        fail("Not yet implemented.");
+        klondike.deal();
+        List<Card> cards = Arrays.asList(new Card(13,CLUBS), new Card(12,CLUBS));
+        klondike.addToTableauPile(0,cards);
     }
 
     //TODO NOT REALLY A TEST!!!
