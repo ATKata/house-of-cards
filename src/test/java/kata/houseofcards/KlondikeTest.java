@@ -178,7 +178,7 @@ public class KlondikeTest {
         klondike.getTableauPile(2).push(new Card(1,CLUBS));
         klondike.makeMove();
         assertThat(klondike.getTableauPile(2)).isEmpty();
-        assertThat(klondike.getFoundationPiles().get(CLUBS.ordinal())).hasSize(1);
+        assertThat(klondike.getFoundationPile(CLUBS)).hasSize(1);
     }
 
     @Test
@@ -186,7 +186,7 @@ public class KlondikeTest {
         klondike.getTableauPile(1).push(new Card(2,CLUBS));
         klondike.makeMove();
         assertThat(klondike.getTableauPile(1)).isNotEmpty();
-        assertThat(klondike.getFoundationPiles().get(CLUBS.ordinal())).isEmpty();
+        assertThat(klondike.getFoundationPile(CLUBS)).isEmpty();
     }
 
     @Test
@@ -196,7 +196,7 @@ public class KlondikeTest {
         klondike.makeMove();
         assertThat(klondike.getTableauPile(1)).isEmpty();
         assertThat(klondike.getTableauPile(2)).isNotEmpty();
-        assertThat(klondike.getFoundationPiles().get(HEARTS.ordinal())).isNotEmpty();
+        assertThat(klondike.getFoundationPile(HEARTS)).isNotEmpty();
     }
 
     @Test

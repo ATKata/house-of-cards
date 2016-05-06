@@ -95,14 +95,14 @@ public class Klondike {
     public boolean addToFoundationPile(Card card) {
         Stack<Card> foundationPileForSuit = foundationPiles.get(card.getSuit().ordinal());
         if (foundationPileForSuit.size() == 0) {
-            if(card.getFaceValue() == 1) {
+            if (card.getFaceValue() == 1) {
                 return addCardToPile(card, foundationPileForSuit);
             } else {
                 return false;
             }
         }
 
-        if(card.getFaceValue() - foundationPileForSuit.peek().getFaceValue() == 1) {
+        if (card.getFaceValue() - foundationPileForSuit.peek().getFaceValue() == 1) {
             return addCardToPile(card, foundationPileForSuit);
         } else {
             return false;
@@ -116,15 +116,15 @@ public class Klondike {
 
     public boolean addToTableauPile(int index, Card card) {
         Stack<Card> pile = tableauPiles.get(index);
-        if( pile.isEmpty() ){
-            if( card.getFaceValue() == 13 ){
+        if (pile.isEmpty()) {
+            if (card.getFaceValue() == 13) {
                 return addCardToPile(card, pile);
             } else {
                 return false;
             }
         }
 
-        if( pile.peek().getFaceValue() > card.getFaceValue() ){
+        if (pile.peek().getFaceValue() > card.getFaceValue()) {
             return addCardToPile(card, pile);
         } else {
             return false;
@@ -137,7 +137,7 @@ public class Klondike {
         return true;
     }
 
-    public boolean addToTableauPile(int index, List<Card> cards){
+    public boolean addToTableauPile(int index, List<Card> cards) {
         cards.stream().forEach(card -> card.setFaceUp(true));
         return tableauPiles.get(index).addAll(cards);
     }
@@ -145,36 +145,43 @@ public class Klondike {
     public List<Card> takeCardsFromTableauPile(int index) {
         List<Card> selectedPile = tableauPiles.get(index);
         int indexOfFirstUpturnedCard = 0;
-        for( int i = 0; i < selectedPile.size(); i++ ){
-            if(selectedPile.get(i).isFaceUp()){
+        for (int i = 0; i < selectedPile.size(); i++) {
+            if (selectedPile.get(i).isFaceUp()) {
                 indexOfFirstUpturnedCard = i;
                 break;
             }
         }
-        List<Card> cardsToRemove = selectedPile.subList(indexOfFirstUpturnedCard,selectedPile.size());
+        List<Card> cardsToRemove = selectedPile.subList(indexOfFirstUpturnedCard, selectedPile.size());
         List<Card> cardsToReturn = new ArrayList<>(cardsToRemove);
         cardsToRemove.clear();
         return cardsToReturn;
     }
 
-    public void makeMove() {
-        // return tryAndMoveAnAce() || tryAndMoveTableau();
-        if (tryAndMoveAnAce())
-            return;
-        if (tryAndMoveTableau())
-            return;
+    public boolean makeMove() {
+        return tryAndMoveAnAce() || tryAndMoveTableau();
     }
 
     private boolean tryAndMoveTableau() {
-        String message = "Not yet implemented!";
-        System.err.println(message);
-        throw new UnsupportedOperationException(message);
+        for (Stack<Card> tableauPile : tableauPiles) {
+            if (tableauPile.isEmpty()) {
+                continue;
+            }
+            Card selectedCard = tableauPile.peek();
+            for (Stack<Card> comparisonPile : tableauPiles) {
+                if (!tableauPile.equals(comparisonPile)) {
+                    if (!comparisonPile.isEmpty() && comparisonPile.peek().getFaceValue() == selectedCard.getFaceValue() - 1) {
+                        return tableauPile.add(comparisonPile.pop());
+                    }
+                }
+            }
 
+        }
+        return false;
     }
 
     private boolean tryAndMoveAnAce() {
         for (Stack<Card> tableauPile : tableauPiles) {
-            if( ! tableauPile.empty() ) {
+            if (!tableauPile.empty()) {
                 Card card = tableauPile.peek();
                 if (card.getFaceValue() == 1) {
                     addToFoundationPile(tableauPile.pop());
@@ -183,5 +190,9 @@ public class Klondike {
             }
         }
         return false;
+    }
+
+    public List<Card> getFoundationPile(Suit suit) {
+        return foundationPiles.get(suit.ordinal());
     }
 }
