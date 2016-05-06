@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-import static com.sun.org.apache.xerces.internal.impl.xpath.regex.CaseInsensitiveMap.get;
-
 public class Klondike {
     public static final String EMPTY_PILE = "___";
     private Deck stockPile;
@@ -157,5 +155,33 @@ public class Klondike {
         List<Card> cardsToReturn = new ArrayList<>(cardsToRemove);
         cardsToRemove.clear();
         return cardsToReturn;
+    }
+
+    public void makeMove() {
+        // return tryAndMoveAnAce() || tryAndMoveTableau();
+        if (tryAndMoveAnAce())
+            return;
+        if (tryAndMoveTableau())
+            return;
+    }
+
+    private boolean tryAndMoveTableau() {
+        String message = "Not yet implemented!";
+        System.err.println(message);
+        throw new UnsupportedOperationException(message);
+
+    }
+
+    private boolean tryAndMoveAnAce() {
+        for (Stack<Card> tableauPile : tableauPiles) {
+            if( ! tableauPile.empty() ) {
+                Card card = tableauPile.peek();
+                if (card.getFaceValue() == 1) {
+                    addToFoundationPile(tableauPile.pop());
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

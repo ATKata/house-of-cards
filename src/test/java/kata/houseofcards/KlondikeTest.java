@@ -173,4 +173,37 @@ public class KlondikeTest {
         System.out.println(klondike);
     }
 
+    @Test
+    public void  makeMove_whenThereIsAnAce_moveItToFoundationPile(){
+        klondike.getTableauPile(2).push(new Card(1,CLUBS));
+        klondike.makeMove();
+        assertThat(klondike.getTableauPile(2)).isEmpty();
+        assertThat(klondike.getFoundationPiles().get(CLUBS.ordinal())).hasSize(1);
+    }
+
+    @Test
+    public void  makeMove_whenThereIsNoAce_doNotMoveItToFoundationPile(){
+        klondike.getTableauPile(1).push(new Card(2,CLUBS));
+        klondike.makeMove();
+        assertThat(klondike.getTableauPile(1)).isNotEmpty();
+        assertThat(klondike.getFoundationPiles().get(CLUBS.ordinal())).isEmpty();
+    }
+
+    @Test
+    public void  makeMove_whenThereIsMoreThanOneAce_shouldMakeOnlyOneMove(){
+        klondike.getTableauPile(1).push(new Card(1,HEARTS));
+        klondike.getTableauPile(2).push(new Card(1,CLUBS));
+        klondike.makeMove();
+        assertThat(klondike.getTableauPile(1)).isEmpty();
+        assertThat(klondike.getTableauPile(2)).isNotEmpty();
+        assertThat(klondike.getFoundationPiles().get(HEARTS.ordinal())).isNotEmpty();
+    }
+
+    @Test
+    public void makeAValidTableauMove(){
+        klondike.getTableauPile(0).push(new Card(3,CLUBS));
+        klondike.getTableauPile(1).push(new Card(2, DIAMONDS));
+        klondike.makeMove();
+        assertThat(klondike.getTableauPile(0)).hasSize(2);
+    }
 }
