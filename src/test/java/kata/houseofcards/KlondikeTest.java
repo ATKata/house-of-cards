@@ -149,7 +149,7 @@ public class KlondikeTest {
     }
 
     @Test
-    public void cantStartTableauPileIfNotAKing(){
+    public void cannotStartTableauPileIfNotAKing(){
         Card aceOfSpades = new Card(1,SPADES);
         assertThat(klondike.addToTableauPile(0,aceOfSpades)).isFalse();
     }
@@ -158,6 +158,12 @@ public class KlondikeTest {
     public void canStartTableauPileOnAKing(){
         Card kingOfSpades = new Card(13,SPADES);
         assertThat(klondike.addToTableauPile(0,kingOfSpades)).isTrue();
+    }
+
+    @Test
+    public void takeMultipleCardsFromTableauPile(){
+        klondike.deal();
+        assertThat(klondike.takeCardsFromTableauPile(1)).hasSize(1);
     }
 
     //TODO NOT REALLY A TEST!!!

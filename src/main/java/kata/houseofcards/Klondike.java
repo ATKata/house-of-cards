@@ -1,9 +1,12 @@
 package kata.houseofcards;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
+
+import static com.sun.org.apache.xerces.internal.impl.xpath.regex.CaseInsensitiveMap.get;
 
 public class Klondike {
     public static final String EMPTY_PILE = "___";
@@ -139,5 +142,20 @@ public class Klondike {
     public boolean addToTableauPile(int index, List<Card> cards){
         cards.stream().forEach(card -> card.setFaceUp(true));
         return tableauPiles.get(index).addAll(cards);
+    }
+
+    public List<Card> takeCardsFromTableauPile(int index) {
+        List<Card> selectedPile = tableauPiles.get(index);
+        int indexOfFirstUpturnedCard = 0;
+        for( int i = 0; i < selectedPile.size(); i++ ){
+            if(selectedPile.get(i).isFaceUp()){
+                indexOfFirstUpturnedCard = i;
+                break;
+            }
+        }
+        List<Card> cardsToRemove = selectedPile.subList(indexOfFirstUpturnedCard,selectedPile.size());
+        List<Card> cardsToReturn = new ArrayList<>(cardsToRemove);
+        cardsToRemove.clear();
+        return cardsToReturn;
     }
 }
