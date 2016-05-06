@@ -95,18 +95,14 @@ public class Klondike {
         Stack<Card> foundationPileForSuit = foundationPiles.get(card.getSuit().ordinal());
         if (foundationPileForSuit.size() == 0) {
             if(card.getFaceValue() == 1) {
-                card.setFaceUp(true);
-                foundationPileForSuit.push(card);
-                return true;
+                return addCardToPile(card, foundationPileForSuit);
             } else {
                 return false;
             }
         }
 
         if(card.getFaceValue() - foundationPileForSuit.peek().getFaceValue() == 1) {
-            card.setFaceUp(true);
-            foundationPileForSuit.push(card);
-            return true;
+            return addCardToPile(card, foundationPileForSuit);
         } else {
             return false;
         }
@@ -119,16 +115,29 @@ public class Klondike {
 
     public boolean addToTableauPile(int index, Card card) {
         Stack<Card> pile = tableauPiles.get(index);
-        if(pile.peek().getFaceValue()>card.getFaceValue()){
-            card.setFaceUp(true);
-            pile.push(card);
-            return true;
+        if( pile.isEmpty() ){
+            if( card.getFaceValue() == 13 ){
+                return addCardToPile(card, pile);
+            } else {
+                return false;
+            }
+        }
+
+        if( pile.peek().getFaceValue() > card.getFaceValue() ){
+            return addCardToPile(card, pile);
         } else {
             return false;
         }
     }
 
+    private boolean addCardToPile(Card card, Stack<Card> pile) {
+        card.setFaceUp(true);
+        pile.push(card);
+        return true;
+    }
+
     public boolean addToTableauPile(int index, List<Card> cards){
-        return false;
+        cards.stream().forEach(card -> card.setFaceUp(true));
+        return tableauPiles.get(index).addAll(cards);
     }
 }

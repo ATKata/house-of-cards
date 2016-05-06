@@ -12,6 +12,11 @@ public class Card implements Comparable<Card> {
     private final Suit suit;
     private boolean faceUp;
 
+    public Card(int faceValue, Suit suit, boolean isFaceUp) {
+        this(faceValue,suit);
+        this.setFaceUp(isFaceUp);
+    }
+
     public boolean isFaceUp() {
         return faceUp;
     }
@@ -49,6 +54,7 @@ public class Card implements Comparable<Card> {
         Card card = (Card) o;
 
         if (faceValue != card.faceValue) return false;
+        if (faceUp != card.faceUp) return false;
         return suit == card.suit;
 
     }
@@ -56,7 +62,8 @@ public class Card implements Comparable<Card> {
     @Override
     public int hashCode() {
         int result = faceValue;
-        result = 31 * result + (suit != null ? suit.hashCode() : 0);
+        result = 31 * result + suit.hashCode();
+        result = 31 * result + (faceUp ? 1 : 0);
         return result;
     }
 

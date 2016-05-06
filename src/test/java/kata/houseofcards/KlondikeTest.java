@@ -141,12 +141,23 @@ public class KlondikeTest {
         assertThat(firstTableauPile).hasSize(1);
     }
 
-    //TODO
     @Test
     public void addMultipleCardsToTableauPile(){
-        klondike.deal();
         List<Card> cards = Arrays.asList(new Card(13,CLUBS), new Card(12,CLUBS));
-        klondike.addToTableauPile(0,cards);
+        assertThat(klondike.addToTableauPile(0,cards)).isTrue();
+        assertThat(klondike.getTableauPile(0)).containsExactly(new Card(13,CLUBS,true), new Card(12,CLUBS,true));
+    }
+
+    @Test
+    public void cantStartTableauPileIfNotAKing(){
+        Card aceOfSpades = new Card(1,SPADES);
+        assertThat(klondike.addToTableauPile(0,aceOfSpades)).isFalse();
+    }
+
+    @Test
+    public void canStartTableauPileOnAKing(){
+        Card kingOfSpades = new Card(13,SPADES);
+        assertThat(klondike.addToTableauPile(0,kingOfSpades)).isTrue();
     }
 
     //TODO NOT REALLY A TEST!!!
