@@ -163,18 +163,18 @@ public class Klondike {
 
     private boolean tryAndMoveTableau() {
         for (Stack<Card> tableauPile : tableauPiles) {
-            if (tableauPile.isEmpty()) {
-                continue;
-            }
-            Card selectedCard = tableauPile.peek();
-            for (Stack<Card> comparisonPile : tableauPiles) {
-                if (!tableauPile.equals(comparisonPile)) {
-                    if (!comparisonPile.isEmpty() && comparisonPile.peek().getFaceValue() == selectedCard.getFaceValue() - 1) {
-                        return tableauPile.add(comparisonPile.pop());
+            if (!tableauPile.isEmpty()) {
+                Card selectedCard = tableauPile.peek();
+                for (int i = 0; i < tableauPiles.size(); i++) {
+                    Stack<Card> comparisonPile = tableauPiles.get(i);
+                    if (!tableauPile.equals(comparisonPile)) {
+                        List<Card> faceUpCards = takeCardsFromTableauPile(i);
+                        if ( !faceUpCards.isEmpty() && faceUpCards.get(0).getFaceValue() == selectedCard.getFaceValue() - 1) {
+                            return tableauPile.addAll(faceUpCards);
+                        }
                     }
                 }
             }
-
         }
         return false;
     }

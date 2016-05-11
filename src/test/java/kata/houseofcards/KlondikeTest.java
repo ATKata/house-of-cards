@@ -3,16 +3,15 @@ package kata.houseofcards;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
+import static jdk.nashorn.internal.objects.NativeArray.push;
 import static kata.houseofcards.Suit.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Fail.fail;
 
 public class KlondikeTest {
 
@@ -176,7 +175,9 @@ public class KlondikeTest {
     @Test
     public void  makeMove_whenThereIsAnAce_moveItToFoundationPile(){
         klondike.getTableauPile(2).push(new Card(1,CLUBS));
+
         klondike.makeMove();
+
         assertThat(klondike.getTableauPile(2)).isEmpty();
         assertThat(klondike.getFoundationPile(CLUBS)).hasSize(1);
     }
@@ -184,7 +185,9 @@ public class KlondikeTest {
     @Test
     public void  makeMove_whenThereIsNoAce_doNotMoveItToFoundationPile(){
         klondike.getTableauPile(1).push(new Card(2,CLUBS));
+
         klondike.makeMove();
+
         assertThat(klondike.getTableauPile(1)).isNotEmpty();
         assertThat(klondike.getFoundationPile(CLUBS)).isEmpty();
     }
@@ -193,17 +196,34 @@ public class KlondikeTest {
     public void  makeMove_whenThereIsMoreThanOneAce_shouldMakeOnlyOneMove(){
         klondike.getTableauPile(1).push(new Card(1,HEARTS));
         klondike.getTableauPile(2).push(new Card(1,CLUBS));
+
         klondike.makeMove();
+
         assertThat(klondike.getTableauPile(1)).isEmpty();
         assertThat(klondike.getTableauPile(2)).isNotEmpty();
         assertThat(klondike.getFoundationPile(HEARTS)).isNotEmpty();
     }
 
     @Test
-    public void makeAValidTableauMove(){
-        klondike.getTableauPile(0).push(new Card(3,CLUBS));
-        klondike.getTableauPile(1).push(new Card(2, DIAMONDS));
+    public void makeAValidTableauMoveForASingleCard(){
+        klondike.addToTableauPile(0, new Card(13,CLUBS));
+        klondike.getTableauPile(1).push(new Card(13,DIAMONDS));
+        klondike.addToTableauPile(1, new Card(12, DIAMONDS));
+
         klondike.makeMove();
+
         assertThat(klondike.getTableauPile(0)).hasSize(2);
+    }
+
+    @Test
+    public void makeAValidTableauMoveForAMultipleCards(){
+        klondike.addToTableauPile(0, new Card(13,CLUBS));
+
+        klondike.getTableauPile(1).push(new Card(1,DIAMONDS));
+        klondike.addToTableauPile(1, Arrays.asList(new Card(12, DIAMONDS), new Card(11, DIAMONDS)));
+
+        klondike.makeMove();
+
+        assertThat(klondike.getTableauPile(0)).hasSize(3);
     }
 }
