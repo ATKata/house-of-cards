@@ -193,6 +193,16 @@ public class KlondikeTest {
     }
 
     @Test
+    public void moveACardThatIsntAnAceToTheFoundationPile(){
+        klondike.addToFoundationPile(new Card(1,CLUBS));
+        klondike.getTableauPile(0).push(new Card(2,CLUBS));
+
+        klondike.makeMove();
+
+        assertThat(klondike.getFoundationPile(CLUBS)).hasSize(2);
+    }
+
+    @Test
     public void  makeMove_whenThereIsMoreThanOneAce_shouldMakeOnlyOneMove(){
         klondike.getTableauPile(1).push(new Card(1,HEARTS));
         klondike.getTableauPile(2).push(new Card(1,CLUBS));
@@ -226,4 +236,6 @@ public class KlondikeTest {
 
         assertThat(klondike.getTableauPile(0)).hasSize(3);
     }
+
+
 }

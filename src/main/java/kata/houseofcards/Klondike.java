@@ -158,7 +158,7 @@ public class Klondike {
     }
 
     public boolean makeMove() {
-        return tryAndMoveAnAce() || tryAndMoveTableau();
+        return tryAndMoveFoundation() || tryAndMoveTableau();
     }
 
     private boolean tryAndMoveTableau() {
@@ -179,12 +179,12 @@ public class Klondike {
         return false;
     }
 
-    private boolean tryAndMoveAnAce() {
+    private boolean tryAndMoveFoundation() {
         for (Stack<Card> tableauPile : tableauPiles) {
             if (!tableauPile.empty()) {
                 Card card = tableauPile.peek();
-                if (card.getFaceValue() == 1) {
-                    addToFoundationPile(tableauPile.pop());
+                if (addToFoundationPile(card)) {
+                    tableauPile.pop();
                     return true;
                 }
             }
