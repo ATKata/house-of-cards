@@ -237,5 +237,29 @@ public class KlondikeTest {
         assertThat(klondike.getTableauPile(0)).hasSize(3);
     }
 
+    @Test
+    public void takeFromStockPileIfCantGoAndDiscardToWasteIfCantGo(){
+        assertThat(klondike.makeMove()).isFalse();
 
+        assertThat(klondike.getWastePile()).hasSize(1);
+    }
+
+    @Test
+    public void takeFromStockPileIfCantGoAndPlayToTableauIfAvailable(){
+        klondike.getWastePile().push(new Card(12,CLUBS));
+        klondike.addToTableauPile(3, new Card(13,CLUBS));
+
+        assertThat(klondike.makeMove()).isTrue();
+
+        assertThat(klondike.getTableauPile(3)).hasSize(2);
+    }
+//
+//    @Test
+//    public void takeFromStockPileIfCantGoAndPlayToFoundationIfAvailable(){
+//
+//
+//        assertThat(klondike.makeMove()).isTrue();
+//
+//        assertThat(klondike.getFoundationPile(CLUBS)).hasSize(1);
+//    }
 }

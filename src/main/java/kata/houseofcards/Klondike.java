@@ -124,7 +124,7 @@ public class Klondike {
             }
         }
 
-        if (pile.peek().getFaceValue() > card.getFaceValue()) {
+        if (pile.peek().getFaceValue() == card.getFaceValue()+1) {
             return addCardToPile(card, pile);
         } else {
             return false;
@@ -158,7 +158,23 @@ public class Klondike {
     }
 
     public boolean makeMove() {
-        return tryAndMoveFoundation() || tryAndMoveTableau();
+        return tryAndMoveFoundation() || tryAndMoveTableau() || tryToTakeFromStock();
+    }
+
+    private boolean tryToTakeFromStock() {
+        if(!wastePile.isEmpty()){
+            Card wasteCard = wastePile.peek();
+            for (int i = 0; i < tableauPiles.size(); i++) {
+                Stack<Card> tableauPile = tableauPiles.get(i);
+                if ( addToTableauPile(i, wasteCard) ){
+                    wastePile.pop();
+                    return true;
+                }
+            }
+        }
+        Card dealtCard = stockPile.deal();
+        wastePile.push(dealtCard);
+        return false;
     }
 
     private boolean tryAndMoveTableau() {
