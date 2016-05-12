@@ -8,7 +8,6 @@ import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
-import static jdk.nashorn.internal.objects.NativeArray.push;
 import static kata.houseofcards.Suit.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -160,16 +159,22 @@ public class KlondikeTest {
     }
 
     @Test
-    public void takeMultipleCardsFromTableauPile(){
+    public void takeFaceUpCardsFromTableauPile(){
         klondike.deal();
         assertThat(klondike.takeCardsFromTableauPile(1)).hasSize(1);
+        assertThat(klondike.getTableauPile(1).get(0).isFaceUp()).isTrue();
     }
 
     //TODO NOT REALLY A TEST!!!
     @Test
     public void playGame(){
         klondike.deal();
-        System.out.println(klondike);
+
+        for (int turnNo=0; turnNo<2; turnNo++) {
+            System.out.println(klondike);
+            klondike.makeMove();
+        }
+
     }
 
     @Test

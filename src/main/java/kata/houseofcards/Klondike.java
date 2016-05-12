@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
+
 public class Klondike {
     public static final String EMPTY_PILE = "___";
     private Deck stockPile;
@@ -154,6 +156,9 @@ public class Klondike {
         List<Card> cardsToRemove = selectedPile.subList(indexOfFirstUpturnedCard, selectedPile.size());
         List<Card> cardsToReturn = new ArrayList<>(cardsToRemove);
         cardsToRemove.clear();
+        if(!selectedPile.isEmpty()){
+            selectedPile.get(selectedPile.size()-1).setFaceUp(true);
+        }
         return cardsToReturn;
     }
 
@@ -164,6 +169,10 @@ public class Klondike {
     private boolean tryToTakeFromStock() {
         if(!wastePile.isEmpty()){
             Card wasteCard = wastePile.peek();
+            if(addToFoundationPile(wasteCard)){
+                return true;
+            }
+
             for (int i = 0; i < tableauPiles.size(); i++) {
                 Stack<Card> tableauPile = tableauPiles.get(i);
                 if ( addToTableauPile(i, wasteCard) ){
