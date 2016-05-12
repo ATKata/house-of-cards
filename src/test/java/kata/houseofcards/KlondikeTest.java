@@ -245,7 +245,7 @@ public class KlondikeTest {
     }
 
     @Test
-    public void takeFromStockPileIfCantGoAndPlayToTableauIfAvailable(){
+    public void takeFromWastePileIfCantGoAndPlayToTableauIfAvailable(){
         klondike.getWastePile().push(new Card(12,CLUBS));
         klondike.addToTableauPile(3, new Card(13,CLUBS));
 
@@ -253,13 +253,13 @@ public class KlondikeTest {
 
         assertThat(klondike.getTableauPile(3)).hasSize(2);
     }
-//
-//    @Test
-//    public void takeFromStockPileIfCantGoAndPlayToFoundationIfAvailable(){
-//
-//
-//        assertThat(klondike.makeMove()).isTrue();
-//
-//        assertThat(klondike.getFoundationPile(CLUBS)).hasSize(1);
-//    }
+
+    @Test
+    public void takeFromWastePileIfCantGoAndPlayToFoundationIfAvailable(){
+        klondike.getWastePile().push(new Card(1,CLUBS));
+
+        assertThat(klondike.makeMove()).isTrue();
+
+        assertThat(klondike.getFoundationPile(CLUBS)).hasSize(1);
+    }
 }
