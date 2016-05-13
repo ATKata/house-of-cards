@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
@@ -11,6 +12,7 @@ import java.util.Stack;
 import static kata.houseofcards.Suit.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.fail;
 
 public class KlondikeTest {
 
@@ -165,26 +167,42 @@ public class KlondikeTest {
         assertThat(klondike.getTableauPile(1).get(0).isFaceUp()).isTrue();
     }
 
+    @Test
+    public void tableauPilesRemainUnchangedIfNoMoveAvailable(){
+        klondike.getTableauPile(0).push(new Card(5,CLUBS));
+        klondike.getTableauPile(0).push(new Card(7,HEARTS, true));
+        klondike.getTableauPile(1).push(new Card(5,DIAMONDS));
+        klondike.getTableauPile(1).push(new Card(7,SPADES, true));
+
+        klondike.makeMove();
+
+        assertThat(klondike.getTableauPile(0).get(0).isFaceUp()).isFalse();
+    }
+
     //TODO NOT REALLY A TEST!!!
     @Test
     public void playGame(){
         klondike.deal();
+        System.out.println(klondike);
 
-        for (int turnNo=0; turnNo<2; turnNo++) {
-            System.out.println(klondike);
+        for (int turnNo=0; turnNo < 3; turnNo++) {
             klondike.makeMove();
+            System.out.println("Turn: " + turnNo);
+            System.out.println(klondike);
         }
 
     }
 
     @Test
     public void  makeMove_whenThereIsAnAce_moveItToFoundationPile(){
+        klondike.getTableauPile(2).push(new Card(7,DIAMONDS));
         klondike.getTableauPile(2).push(new Card(1,CLUBS));
 
         klondike.makeMove();
 
-        assertThat(klondike.getTableauPile(2)).isEmpty();
+        assertThat(klondike.getTableauPile(2)).hasSize(1);
         assertThat(klondike.getFoundationPile(CLUBS)).hasSize(1);
+        assertThat(klondike.getTableauPile(2).peek().isFaceUp()).isTrue();
     }
 
     @Test
@@ -228,13 +246,13 @@ public class KlondikeTest {
         klondike.makeMove();
 
         assertThat(klondike.getTableauPile(0)).hasSize(2);
+        assertThat(klondike.getTableauPile(1)).hasSize(1);
     }
 
     @Test
     public void makeAValidTableauMoveForAMultipleCards(){
         klondike.addToTableauPile(0, new Card(13,CLUBS));
-
-        klondike.getTableauPile(1).push(new Card(1,DIAMONDS));
+        klondike.getTableauPile(1).push(new Card(7,DIAMONDS));
         klondike.addToTableauPile(1, Arrays.asList(new Card(12, DIAMONDS), new Card(11, DIAMONDS)));
 
         klondike.makeMove();
@@ -244,9 +262,14 @@ public class KlondikeTest {
 
     @Test
     public void takeFromStockPileIfCantGoAndDiscardToWasteIfCantGo(){
+        klondike.getTableauPile(0).push(new Card(2,SPADES));
+        klondike.getTableauPile(1).push(new Card(2,DIAMONDS));
+
         assertThat(klondike.makeMove()).isFalse();
 
         assertThat(klondike.getWastePile()).hasSize(1);
+        assertThat(klondike.getTableauPile(0)).hasSize(1);
+        assertThat(klondike.getTableauPile(1)).hasSize(1);
     }
 
     @Test

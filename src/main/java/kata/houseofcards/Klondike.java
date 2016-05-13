@@ -1,12 +1,11 @@
 package kata.houseofcards;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
-
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 
 public class Klondike {
     public static final String EMPTY_PILE = "___";
@@ -145,25 +144,30 @@ public class Klondike {
     }
 
     public List<Card> takeCardsFromTableauPile(int index) {
-        List<Card> selectedPile = tableauPiles.get(index);
+        List<Card> sourcePile = tableauPiles.get(index);
         int indexOfFirstUpturnedCard = 0;
-        for (int i = 0; i < selectedPile.size(); i++) {
-            if (selectedPile.get(i).isFaceUp()) {
+        for (int i = 0; i < sourcePile.size(); i++) {
+            if (sourcePile.get(i).isFaceUp()) {
                 indexOfFirstUpturnedCard = i;
                 break;
             }
         }
-        List<Card> cardsToRemove = selectedPile.subList(indexOfFirstUpturnedCard, selectedPile.size());
+        List<Card> cardsToRemove = sourcePile.subList(indexOfFirstUpturnedCard, sourcePile.size());
         List<Card> cardsToReturn = new ArrayList<>(cardsToRemove);
         cardsToRemove.clear();
-        if(!selectedPile.isEmpty()){
-            selectedPile.get(selectedPile.size()-1).setFaceUp(true);
+        if(!sourcePile.isEmpty()) {
+            sourcePile.get(sourcePile.size()-1).setFaceUp(true);
         }
         return cardsToReturn;
     }
 
     public boolean makeMove() {
-        return tryAndMoveFoundation() || tryAndMoveTableau() || tryToTakeFromStock();
+        boolean result = tryAndMoveFoundation() || tryAndMoveTableau() || tryToTakeFromStock();
+//        assert(stockPile.getCards().size()+
+//                wastePile.size()+
+//                foundationPiles.stream().mapToInt(Collection::size).sum()+
+//                tableauPiles.stream().mapToInt((Collection::size)).sum()==52);
+        return result;
     }
 
     private boolean tryToTakeFromStock() {
@@ -187,16 +191,19 @@ public class Klondike {
     }
 
     private boolean tryAndMoveTableau() {
-        for (Stack<Card> tableauPile : tableauPiles) {
-            if (!tableauPile.isEmpty()) {
-                Card selectedCard = tableauPile.peek();
+        for (Stack<Card> destinationPile : tableauPiles) {
+            if (!destinationPile.isEmpty()) {
                 for (int i = 0; i < tableauPiles.size(); i++) {
-                    Stack<Card> comparisonPile = tableauPiles.get(i);
-                    if (!tableauPile.equals(comparisonPile)) {
+                    Stack<Card> sourcePile = tableauPiles.get(i);
+                    if (!destinationPile.equals(sourcePile)) {
                         List<Card> faceUpCards = takeCardsFromTableauPile(i);
-                        if ( !faceUpCards.isEmpty() && faceUpCards.get(0).getFaceValue() == selectedCard.getFaceValue() - 1) {
-                            return tableauPile.addAll(faceUpCards);
+                        if ( !faceUpCards.isEmpty() && faceUpCards.get(0).getFaceValue() == destinationPile.peek().getFaceValue() - 1) {
+                            return destinationPile.addAll(faceUpCards);
                         }
+                        if(!sourcePile.isEmpty()){
+                            sourcePile.peek().setFaceUp(false);
+                        }
+                        sourcePile.addAll(faceUpCards);
                     }
                 }
             }
@@ -210,6 +217,9 @@ public class Klondike {
                 Card card = tableauPile.peek();
                 if (addToFoundationPile(card)) {
                     tableauPile.pop();
+                    if(!tableauPile.isEmpty()){
+                        tableauPile.peek().setFaceUp(true);
+                    }
                     return true;
                 }
             }
