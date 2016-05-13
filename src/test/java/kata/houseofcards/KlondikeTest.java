@@ -77,21 +77,31 @@ public class KlondikeTest {
     }
 
     @Test
-    public void takeCardFromStockAddsOneToWastePile(){
-        klondike.deal();
+    public void addCardToWasteDoesWhatItSays(){
         Card takenFromStock = klondike.takeCardFromStock();
+
+        klondike.addCardToWaste(takenFromStock);
+
         Card placedOnWaste = klondike.getWastePile().peek();
         assertThat(placedOnWaste).isNotNull().isEqualTo(takenFromStock);
         assertThat(placedOnWaste.isFaceUp()).isTrue();
     }
 
     @Test
+    public void addCardToWasteReturnsFalseIfCardNull(){
+        assertThat(klondike.addCardToWaste(null)).isFalse();
+    }
+
+    @Test
     public void takeCardFromStockWhenEmptyRefillsFromWastePile(){
         Card firstCardDrawn = klondike.takeCardFromStock();
+        klondike.addCardToWaste(firstCardDrawn);
         Card lastCardDrawn = null;
         for (int i = 0; i < 52; i++) {
-           lastCardDrawn = klondike.takeCardFromStock();
+            lastCardDrawn = klondike.takeCardFromStock();
+            klondike.addCardToWaste(lastCardDrawn);
         }
+        firstCardDrawn.setFaceUp(true);
         assertThat(firstCardDrawn).isEqualTo(lastCardDrawn);
     }
 
@@ -185,7 +195,7 @@ public class KlondikeTest {
         klondike.deal();
         System.out.println(klondike);
 
-        for (int turnNo=0; turnNo < 3; turnNo++) {
+        for (int turnNo=0; turnNo < 1000; turnNo++) {
             klondike.makeMove();
             System.out.println("Turn: " + turnNo);
             System.out.println(klondike);
@@ -223,6 +233,7 @@ public class KlondikeTest {
         klondike.makeMove();
 
         assertThat(klondike.getFoundationPile(CLUBS)).hasSize(2);
+        assertThat(klondike.getTableauPile(0)).hasSize(0);
     }
 
     @Test
@@ -262,14 +273,9 @@ public class KlondikeTest {
 
     @Test
     public void takeFromStockPileIfCantGoAndDiscardToWasteIfCantGo(){
-        klondike.getTableauPile(0).push(new Card(2,SPADES));
-        klondike.getTableauPile(1).push(new Card(2,DIAMONDS));
-
         assertThat(klondike.makeMove()).isFalse();
-
         assertThat(klondike.getWastePile()).hasSize(1);
-        assertThat(klondike.getTableauPile(0)).hasSize(1);
-        assertThat(klondike.getTableauPile(1)).hasSize(1);
+        assertThat(klondike.getWastePile().peek().isFaceUp()).isTrue();
     }
 
     @Test

@@ -4,6 +4,7 @@ import org.assertj.core.api.Condition;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -54,4 +55,10 @@ public class DeckTest {
         assertThat(deck.getCards()).doesNotContain(aceOfClubs);
     }
 
+    @Test
+    public void deal_givenAnEmptyDeck_returnsNull(){
+        Deck deck = new Deck();
+        IntStream.range(0,52).forEach(i -> deck.deal());
+        assertThat(deck.deal()).isNull();
+    }
 }

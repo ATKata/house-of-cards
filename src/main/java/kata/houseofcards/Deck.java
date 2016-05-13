@@ -25,6 +25,9 @@ public class Deck {
     }
 
     public Card deal() {
+        if(cards.isEmpty()){
+            return null;
+        }
         return cards.pop();
     }
 

@@ -85,12 +85,10 @@ public class Klondike {
     public Card takeCardFromStock() {
         if (stockPile.getCards().size() == 0) {
             stockPile.getCards().addAll(wastePile);
+            wastePile.clear();
             stockPile.getCards().stream().forEach(card -> card.setFaceUp(false));
         }
-        Card dealtCard = stockPile.deal();
-        dealtCard.setFaceUp(true);
-        wastePile.push(dealtCard);
-        return dealtCard;
+        return stockPile.deal();
     }
 
     public boolean addToFoundationPile(Card card) {
@@ -133,9 +131,12 @@ public class Klondike {
     }
 
     private boolean addCardToPile(Card card, Stack<Card> pile) {
-        card.setFaceUp(true);
-        pile.push(card);
-        return true;
+        if( card != null ) {
+            card.setFaceUp(true);
+            pile.push(card);
+            return true;
+        }
+        return false;
     }
 
     public boolean addToTableauPile(int index, List<Card> cards) {
@@ -163,10 +164,11 @@ public class Klondike {
 
     public boolean makeMove() {
         boolean result = tryAndMoveFoundation() || tryAndMoveTableau() || tryToTakeFromStock();
-//        assert(stockPile.getCards().size()+
-//                wastePile.size()+
-//                foundationPiles.stream().mapToInt(Collection::size).sum()+
-//                tableauPiles.stream().mapToInt((Collection::size)).sum()==52);
+        int cardCount = stockPile.getCards().size() +
+                wastePile.size() +
+                foundationPiles.stream().mapToInt(Collection::size).sum() +
+                tableauPiles.stream().mapToInt((Collection::size)).sum();
+//        assert cardCount == 52 : cardCount;
         return result;
     }
 
@@ -174,19 +176,19 @@ public class Klondike {
         if(!wastePile.isEmpty()){
             Card wasteCard = wastePile.peek();
             if(addToFoundationPile(wasteCard)){
+                wastePile.pop();
                 return true;
             }
 
             for (int i = 0; i < tableauPiles.size(); i++) {
-                Stack<Card> tableauPile = tableauPiles.get(i);
                 if ( addToTableauPile(i, wasteCard) ){
                     wastePile.pop();
                     return true;
                 }
             }
         }
-        Card dealtCard = stockPile.deal();
-        wastePile.push(dealtCard);
+
+        addCardToWaste(takeCardFromStock());
         return false;
     }
 
@@ -229,5 +231,9 @@ public class Klondike {
 
     public List<Card> getFoundationPile(Suit suit) {
         return foundationPiles.get(suit.ordinal());
+    }
+
+    public boolean addCardToWaste(Card card) {
+        return addCardToPile(card,wastePile);
     }
 }
