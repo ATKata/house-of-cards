@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
@@ -12,7 +11,6 @@ import java.util.Stack;
 import static kata.houseofcards.Suit.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.fail;
 
 public class KlondikeTest {
 
@@ -189,20 +187,6 @@ public class KlondikeTest {
         assertThat(klondike.getTableauPile(0).get(0).isFaceUp()).isFalse();
     }
 
-    //TODO NOT REALLY A TEST!!!
-    @Test
-    public void playGame(){
-        klondike.deal();
-        System.out.println(klondike);
-
-        for (int turnNo=0; turnNo < 1000; turnNo++) {
-            klondike.makeMove();
-            System.out.println("Turn: " + turnNo);
-            System.out.println(klondike);
-        }
-
-    }
-
     @Test
     public void  makeMove_whenThereIsAnAce_moveItToFoundationPile(){
         klondike.getTableauPile(2).push(new Card(7,DIAMONDS));
@@ -295,5 +279,18 @@ public class KlondikeTest {
         assertThat(klondike.makeMove()).isTrue();
 
         assertThat(klondike.getFoundationPile(CLUBS)).hasSize(1);
+    }
+
+    @Test
+    public void percentageChanceOfAWin(){
+        int wins = 0;
+        double noOfTurns = 10000;
+        for (int i = 0; i < noOfTurns; i++) {
+            Klondike klondike = new Klondike();
+            if(klondike.playGame()){
+                wins++;
+            }
+        }
+        System.out.println(wins * 100/noOfTurns);
     }
 }

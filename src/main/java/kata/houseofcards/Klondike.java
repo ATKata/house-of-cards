@@ -236,4 +236,30 @@ public class Klondike {
     public boolean addCardToWaste(Card card) {
         return addCardToPile(card,wastePile);
     }
+
+    public boolean playGame(){
+        int turnNo = 0;
+        int failedMoves = 0;
+
+        deal();
+
+        while ( failedMoves < 52-7-6-5-4-3-2-1 ){
+            if(!makeMove()){
+                failedMoves++;
+            } else {
+                failedMoves = 0;
+            }
+            turnNo++;
+        }
+        return foundationPiles.stream().mapToInt(Collection::size).sum() == 52;
+    }
+
+    public static void main(String[] args) {
+        Klondike klondike = new Klondike();
+        if(klondike.playGame()){
+            System.out.println("We Won!");
+        } else {
+            System.out.println("We Lost :-(");
+        }
+    }
 }
